@@ -33,7 +33,7 @@ sudo losetup /dev/loop33 build/disk.raw -o 1048576
 sudo mkdosfs -F32 -f 2 /dev/loop33
 sudo mount /dev/loop33 $MNT_DIR
 sudo mkdir -p $MNT_DIR/boot/grub
-sudo cp grub.cfg $MNT_DIR/boot/grub/grub.cfg
+sudo cp boot/grub.cfg $MNT_DIR/boot/grub/grub.cfg
 sudo cp $KERNEL_IMG $MNT_DIR/unikernel.elf
 sync; sync; sync
 
@@ -46,7 +46,7 @@ sudo grub-install --target=i386-pc \
     /dev/loop32
 
 progress "Convert into qcow2"
-qemu-img convert -f raw -O qcow2 build/disk.raw OUTPUT_FILE
+qemu-img convert -f raw -O qcow2 build/disk.raw $OUTPUT_FILE
 
 sudo umount $MNT_DIR
 sudo losetup -d /dev/loop32
