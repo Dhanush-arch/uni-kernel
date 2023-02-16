@@ -1,0 +1,21 @@
+[package]
+name = "unikernel_api"
+version = "0.1.0"
+authors = ["Dhanush-arch"]
+edition = "2021"
+
+[lib]
+name = "unikernel_api"
+path = "lib.rs"
+
+[dependencies]
+log = "0.4"
+memoffset = "0.6.5"
+arrayvec = { version = "0.7.2", default-features = false }
+
+# Arch-specific dependencies.
+x86 = "0.47.0"
+
+# Local dependencies.
+unikernel_runtime = { path = "../../runtime" }
+unikernel_utils = { path = "../unikernel_utils" }

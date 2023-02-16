@@ -1,0 +1,16 @@
+[package]
+name = "virtio"
+version = "0.1.0"
+authors = [""]
+edition = "2021"
+
+[lib]
+name = "virtio"
+path = "lib.rs"
+
+[dependencies]
+bitflags = "1.3.2"
+memoffset = "0.6.5"
+
+unikernel_api = { path = "../../libs/unikernel_api" }
+unikernel_utils = { path = "../../libs/unikernel_utils" }
