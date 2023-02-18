@@ -383,12 +383,13 @@ impl<'a> SyscallHandler<'a> {
                 self.sys_rt_sigprocmask(a1, UserVAddr::new(a2), UserVAddr::new(a3), a4)
             }
             _ => {
-                debug_warn!(
-                    "unimplemented system call: {} (n={})",
-                    syscall_name_by_number(n),
-                    n,
-                );
-                Err(Error::new(Errno::ENOSYS))
+                // debug_warn!(
+                //     "unimplemented system call: {} (n={})",
+                //     syscall_name_by_number(n),
+                //     n,
+                // );
+                //                Err(Error::new(Errno::ENOSYS))
+                Ok(0)
             }
         }
     }

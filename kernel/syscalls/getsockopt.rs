@@ -13,7 +13,7 @@ impl<'a> SyscallHandler<'a> {
         _optlen: Option<UserVAddr>,
     ) -> Result<isize> {
         // TODO:
-        debug_warn!("getsockopt is not implemented");
+        // debug_warn!("getsockopt is not implemented");
         Ok(0)
     }
 }
