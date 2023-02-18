@@ -58,6 +58,8 @@ use crate::{
 };
 use alloc::{boxed::Box, sync::Arc};
 use interrupt::attach_irq;
+use net::register_ethernet_driver;
+use tmpfs::TMP_FS;
 use unikernel_api::kernel_ops::KernelOps;
 use unikernel_runtime::{
     arch::{idle, PageFaultReason, PtRegs},
@@ -66,8 +68,6 @@ use unikernel_runtime::{
     spinlock::SpinLock,
 };
 use unikernel_utils::once::Once;
-use net::register_ethernet_driver;
-use tmpfs::TMP_FS;
 
 #[cfg(test)]
 use crate::test_runner::end_tests;
@@ -130,7 +130,10 @@ impl KernelOps for ApiOps {
         attach_irq(irq, f);
     }
 
-    fn register_ethernet_driver(&self, driver: Box<dyn unikernel_api::driver::net::EthernetDriver>) {
+    fn register_ethernet_driver(
+        &self,
+        driver: Box<dyn unikernel_api::driver::net::EthernetDriver>,
+    ) {
         register_ethernet_driver(driver)
     }
 
@@ -220,15 +223,17 @@ pub fn boot_kernel(#[cfg_attr(debug_assertions, allow(unused))] bootinfo: &BootI
         .lookup_path(Path::new("/dev/console"), true)
         .expect("failed to open /dev/console");
 
+    let argv0 = "/etc/init";
+
     // Open the init's executable.
     // let argv0 = if option_env!("INIT_SCRIPT").is_some() {
     //     "/bin/sh"
     // } else {
     //     "/sbin/init"
     // };
-    // let executable_path = root_fs
-    //     .lookup_path(Path::new(argv0), true)
-    //     .expect("failed to open the init executable");
+    let executable_path = root_fs
+        .lookup_path(Path::new(argv0), true)
+        .expect("failed to open the init executable");
 
     // We cannot initialize the process subsystem until INITIAL_ROOT_FS is initialized.
     INITIAL_ROOT_FS.init(|| Arc::new(SpinLock::new(root_fs)));
@@ -237,6 +242,14 @@ pub fn boot_kernel(#[cfg_attr(debug_assertions, allow(unused))] bootinfo: &BootI
 
     process::init();
     profiler.lap_time("process init");
+
+    Process::new_init_process(
+        INITIAL_ROOT_FS.clone(),
+        executable_path,
+        console,
+        &[b"/etc/init"],
+    )
+    .expect("failed to execute");
 
     // Create the init process.
     // if let Some(script) = option_env!("INIT_SCRIPT") {
