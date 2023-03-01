@@ -223,7 +223,7 @@ pub fn boot_kernel(#[cfg_attr(debug_assertions, allow(unused))] bootinfo: &BootI
         .lookup_path(Path::new("/dev/console"), true)
         .expect("failed to open /dev/console");
 
-    let argv0 = "/etc/init";
+    // let argv0 = "/etc/init";
 
     // Open the init's executable.
     // let argv0 = if option_env!("INIT_SCRIPT").is_some() {
@@ -231,9 +231,9 @@ pub fn boot_kernel(#[cfg_attr(debug_assertions, allow(unused))] bootinfo: &BootI
     // } else {
     //     "/sbin/init"
     // };
-    let executable_path = root_fs
-        .lookup_path(Path::new(argv0), true)
-        .expect("failed to open the init executable");
+    // let executable_path = root_fs
+    //    .lookup_path(Path::new(argv0), true)
+    //    .expect("failed to open the init executable");
 
     // We cannot initialize the process subsystem until INITIAL_ROOT_FS is initialized.
     INITIAL_ROOT_FS.init(|| Arc::new(SpinLock::new(root_fs)));
@@ -243,13 +243,13 @@ pub fn boot_kernel(#[cfg_attr(debug_assertions, allow(unused))] bootinfo: &BootI
     process::init();
     profiler.lap_time("process init");
 
-    Process::new_init_process(
-        INITIAL_ROOT_FS.clone(),
-        executable_path,
-        console,
-        &[b"/etc/init"],
-    )
-    .expect("failed to execute");
+    // Process::new_init_process(
+    //    INITIAL_ROOT_FS.clone(),
+    //    executable_path,
+    //    console,
+    //    &[b"/etc/init"],
+    // )
+    // .expect("failed to execute");
 
     // Create the init process.
     // if let Some(script) = option_env!("INIT_SCRIPT") {
