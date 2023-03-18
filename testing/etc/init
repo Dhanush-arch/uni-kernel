@@ -1,5 +1,16 @@
 #!/bin/sh
-/bin/http-server -p 80 -b any -c 64 -d /var/www/html
+#set -e
+
+#set +e
+#sh /bin/mem-test
+#result=$?
+#set -e
+
+#if [ $result -ne 0 ]; then
+#    echo "FAILED: exited with $result"
+#fi
+
+#/bin/http-server -p 80 -b any -c 64 -d /var/www/html
 #/bin/busybox httpd -p 80 -h /var/www/html
 #exec /etc/test.out
-#exec /bin/ash
+exec /bin/ash
