@@ -21,18 +21,18 @@ ifeq ($(V),)
 .SILENT:
 endif
 
-INITRAMFS_PATH := build.initramfs
-export INIT_SCRIPT := /bin/sh
+# INITRAMFS_PATH := build.initramfs
+# export INIT_SCRIPT := /bin/sh
 
 # $(IMAGE): Use a Docker image for initramfs.
-# ifeq ($(IMAGE),)
-# INITRAMFS_PATH := build/testing.initramfs
-# export INIT_SCRIPT := /bin/sh
-# else
-# IMAGE_FILENAME := $(subst /,.s,$(IMAGE))
-# INITRAMFS_PATH := build/$(IMAGE_FILENAME).initramfs
-# export INIT_SCRIPT := $(shell tools/inspect-init-in-docker-image.py $(IMAGE))
-# endif
+ifeq ($(IMAGE),)
+INITRAMFS_PATH := build/testing.initramfs
+export INIT_SCRIPT := /bin/sh
+else
+IMAGE_FILENAME := $(subst /,.s,$(IMAGE))
+INITRAMFS_PATH := build/$(IMAGE_FILENAME).initramfs
+export INIT_SCRIPT := $(shell tools/inspect-init-in-docker-image.py $(IMAGE))
+endif
 
 DUMMY_INITRAMFS_PATH := build/dummy-for-lint.initramfs
 
