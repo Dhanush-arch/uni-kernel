@@ -1,27 +1,39 @@
-#include <sys/types.h>
 #include <stdio.h>
-#include <unistd.h>
-#include <sys/wait.h>
 #include <stdlib.h>
-int main(int argc, char *argv[])
-{
-   printf("I am: %d\n", (int) getpid());
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <string.h>
 
-   pid_t pid = fork();
-   printf("fork returned: %d\n", (int) pid);
+int main() {
+    pid_t pid;
+    int status;
+    int size = 1024;
+    char *str = "Hello, child process!";
 
-   if (pid < 0) { /* error occurred */
-   	perror("Fork failed");
-   }
-   if (pid == 0) { /* child process */
-   	printf("I am the child with pid %d\n", (int) getpid());
-               printf("Child process is exiting\n");
-               exit(0);
-       }
-   /* parent process */
-   printf("I am the parent waiting for the child process to end\n");
-       wait(NULL);
-       printf("parent process is exiting\n");
-       return(0);
-} 
+    // create child process
+    pid = fork();
+
+    if (pid == -1) {
+        printf("Failed to create child process.\n");
+        exit(1);
+    } else if (pid == 0) {
+        // child process
+        char *ptr;
+        ptr = (char*)malloc(size); // allocate memory block of size 1024 bytes
+        strcpy(ptr, str); // copy string to memory block
+        printf("Memory contents of child process:\n");
+        for (int i = 0; i < size; i++) {
+            printf("%x ", *((unsigned char*)ptr + i)); // print the values of each byte in the memory block
+        }
+        printf("\n");
+        free(ptr); // free the memory block
+        exit(0);
+    } else {
+        // parent process
+        waitpid(pid, &status, 0); // wait for child process to finish
+    }
+
+    return 0;
+}
 
