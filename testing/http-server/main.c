@@ -31,32 +31,32 @@ struct status {
 static struct status status_200 = {
     .code = 200,
     .str = "OK",
-    .html = "<html><body><h1>OK</h1><hr><address>Kerla</address>",
+    .html = "<html><body><h1>OK</h1><hr><address>kernel</address>",
 };
 
 static struct status status_304 = {
     .code = 304,
     .str = "Not Modified",
-    .html = "<html><body><h1>Not Modified</h1><hr><address>Kerla</address>",
+    .html = "<html><body><h1>Not Modified</h1><hr><address>kernel</address>",
 };
 
 static struct status status_404 = {
     .code = 404,
     .str = "Not Found",
-    .html = "<html><body><h1>Not Found</h1><hr><address>Kerla</address>",
+    .html = "<html><body><h1>Not Found</h1><hr><address>kernel</address>",
 };
 
 static struct status status_414 = {
     .code = 414,
     .str = "URI Too Long",
-    .html = "<html><body><h1>URI Too Long</h1><hr><address>Kerla</address>",
+    .html = "<html><body><h1>URI Too Long</h1><hr><address>kernel</address>",
 };
 
 static struct status status_500 = {
     .code = 500,
     .str = "Internal Server Error",
     .html =
-        "<html><body><h1>Internal Server Error</h1><hr><address>Kerla</address>",
+        "<html><body><h1>Internal Server Error</h1><hr><address>kernel</address>",
 };
 
 bool is_prefix(const char *s, const char *prefix) {
@@ -118,7 +118,7 @@ void reply_common_headers(int sock, const char *log_header,
                           struct status *status, const char *content_type) {
     dprintf(sock,
             "HTTP/1.1 %d %s\r\n"
-            "Server: Kerla (https://kerla.dev)\r\n"
+            "Server: kernel (https://kernel.dev)\r\n"
             "Content-Type: %s\r\n",
             status->code, status->str, content_type);
 
