@@ -1,3 +1,4 @@
+//! Log_filter is a module used to filter the logs based on the log levels
 #![cfg_attr(not(test), no_std)]
 
 extern crate alloc;
@@ -86,7 +87,9 @@ impl LogFilter {
         let mut longest_match = 0;
         let mut log_level = DEFAULT_LOG_LEVEL;
         if let Some(module_path) = record.module_path() {
-            let module_path = module_path.strip_prefix("unikernel_").unwrap_or(module_path);
+            let module_path = module_path
+                .strip_prefix("unikernel_")
+                .unwrap_or(module_path);
             for pat in &self.patterns {
                 if pat.module_prefix.len() >= longest_match
                     && module_path.starts_with(&pat.module_prefix)
