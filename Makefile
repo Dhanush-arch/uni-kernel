@@ -96,7 +96,6 @@ build:
 build-crate:
 	$(MAKE) initramfs
 
-	$(PROGRESS) "CARGO" "kernel"
 	$(CARGO) build $(CARGOFLAGS) --manifest-path kernel/Cargo.toml
 
 .PHONY: initramfs
@@ -196,9 +195,9 @@ clean:
 #  Build Rules
 #
 build/testing.initramfs: $(wildcard testing/*) $(wildcard testing/*/*) Makefile
-	$(PROGRESS) "BUILD" testing
-	cd testing && docker buildx build --platform $(docker_platform) -t unikernel-testing .
-	$(PROGRESS) "EXPORT" testing
+	$(PROGRESS) "Building" Unikernel
+	cd testing && docker buildx build --platform $(docker_platform) -q -t unikernel-testing .
+	#$(PROGRESS) "EXPORT" 
 	mkdir -p build
 	$(PYTHON3) tools/docker2initramfs.py $@ unikernel-testing
 
