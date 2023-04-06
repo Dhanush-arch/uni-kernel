@@ -14,5 +14,6 @@
 /bin/busybox httpd -p 80 -h /var/www/html
 #exec /etc/test.out
 #exec /bin/ash -c /bin/mem-test
-/bin/mem-test   #working mem-test
+#/bin/mem-test
 #/bin/overwrite/check-stack
+exec /bin/ash
