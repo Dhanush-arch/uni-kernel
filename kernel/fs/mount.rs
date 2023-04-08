@@ -38,7 +38,7 @@ impl RootFs {
             symlink_follow_limit: DEFAULT_SYMLINK_FOLLOW_MAX,
         })
     }
-
+    // Mounts the file system fs onto the directory dir
     pub fn mount(&mut self, dir: Arc<dyn Directory>, fs: Arc<dyn FileSystem>) -> Result<()> {
         self.mount_points
             .insert(dir.stat()?.inode_no, MountPoint { fs });
