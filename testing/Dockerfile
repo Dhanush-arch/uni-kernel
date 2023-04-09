@@ -45,7 +45,7 @@ RUN make -j$(nproc)
 #
 FROM ubuntu:20.04 as http-server
 RUN apt-get update && apt-get install -qy musl-tools make
-ADD http-server /http-server
+ADD http-server-1 /http-server
 WORKDIR /http-server
 RUN make RELEASE=1 CC=musl-gcc
 

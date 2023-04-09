@@ -197,7 +197,7 @@ clean:
 build/testing.initramfs: $(wildcard testing/*) $(wildcard testing/*/*) Makefile
 	$(PROGRESS) "Building" Unikernel
 	cd testing && docker buildx build --platform $(docker_platform) -q -t unikernel-testing .
-	#$(PROGRESS) "EXPORT" 
+	#$(PROGRESS) "EXPORT"
 	mkdir -p build
 	$(PYTHON3) tools/docker2initramfs.py $@ unikernel-testing
 

@@ -36,7 +36,7 @@ use unikernel_runtime::{
     page_allocator::{alloc_pages, AllocPageFlags},
     spinlock::{SpinLock, SpinLockGuard},
 };
-use unikernel_utils::{alignment::align_up};
+use unikernel_utils::alignment::align_up;
 
 type ProcessTable = BTreeMap<PId, Arc<Process>>;
 
@@ -499,7 +499,7 @@ impl Process {
         let pid = alloc_pid(&mut process_table)?;
         let arch = parent.arch.fork(parent_frame)?;
         let vm = parent.vm().as_ref().unwrap().lock().fork()?;
-        let opened_files = parent.opened_files().lock().clone(); // TODO: #88 has to address this
+        let opened_files = parent.opened_files().lock().clone();
         let process_group = parent.process_group();
         let sig_set = parent.sigset.lock();
 
@@ -515,7 +515,7 @@ impl Process {
             opened_files: Arc::new(SpinLock::new(opened_files)),
             root_fs: parent.root_fs().clone(),
             arch,
-            signals: Arc::new(SpinLock::new(SignalDelivery::new())), // TODO: #88 has to address this
+            signals: Arc::new(SpinLock::new(SignalDelivery::new())),
             signaled_frame: AtomicCell::new(None),
             sigset: SpinLock::new(*sig_set),
         });
