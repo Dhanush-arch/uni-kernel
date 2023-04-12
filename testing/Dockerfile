@@ -87,6 +87,6 @@ RUN mkdir -p /etc /dev /tmp /var/www/html
 ADD integration_tests /integration_tests
 ADD etc/init /etc
 RUN chmod +x /etc/init
-RUN echo "<html><body><h1>It works on Unikernel!</h1></body></html>" > /var/www/html/index.html
+RUN echo "<html><body><h1>It works on Unikernel!</h1><p>A page rendered by the web server</p></body></html>" > /var/www/html/index.html
 
 CMD ["/bin/sh"]
