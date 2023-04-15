@@ -59,6 +59,25 @@ WORKDIR /mem-test
 RUN make RELEASE=1 CC=musl-gcc
 
 #
+#  c-code
+#
+FROM ubuntu:20.04 as c-code
+RUN apt-get update && apt-get install -qy musl-tools make
+ADD c-code /c-code
+WORKDIR /c-code
+RUN make RELEASE=1 CC=musl-gcc
+
+
+#
+#  webserver
+#
+FROM ubuntu:20.04 as webserver
+RUN apt-get update && apt-get install -qy musl-tools make
+ADD webserver /webserver
+WORKDIR /webserver
+RUN make RELEASE=1 CC=musl-gcc
+
+#
 #  Initramfs
 #
 FROM busybox as empty_dir
@@ -77,6 +96,8 @@ COPY --from=busybox  /build/busybox_unstripped /bin/busybox
 #COPY --from=curl     /build/src/curl /bin
 COPY --from=http-server /http-server/build/http-server /bin/http-server
 COPY --from=mem-test /mem-test/build/mem-test /bin/mem-test
+COPY --from=c-code /c-code/build/c-code /bin/c-code
+COPY --from=webserver /webserver/build/webserver /bin/webserver
 
 RUN ["/bin/busybox", "--install", "-s"]
 RUN mkdir -p /etc /dev /tmp /var/www/html
