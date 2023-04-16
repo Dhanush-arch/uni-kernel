@@ -194,6 +194,7 @@ int main(int argc, char **argv)
 }
 
 **/
+/**
 #include <stdio.h>
 #include <string.h>
 #include <signal.h>
@@ -238,4 +239,39 @@ int main() {
 
     return 0;
 }
+**/
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+#define BUFFER_SIZE 1024
+
+int main() {
+    char message[BUFFER_SIZE];
+    pid_t pid;
+
+    // Assign a string to the message variable in the parent process
+    strcpy(message, "Hello, world!");
+
+    // Create a new process
+    pid = fork();
+
+    if (pid < 0) {
+        fprintf(stderr, "Fork failed\n");
+        exit(1);
+    } else if (pid == 0) {
+        // Child process
+        strcpy(message, "Dhanush");
+        printf("New message in child process: %s", message);
+    } else {
+        // Parent process
+		for(int i=0;i<1000000000;i++){
+		    for(int j=0;j<1000000000;j++);
+		}
+        printf("New message in parent process: %s", message);
+    }
+
+    return 0;
+}

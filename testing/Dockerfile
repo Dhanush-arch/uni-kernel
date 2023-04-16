@@ -50,6 +50,24 @@ WORKDIR /http-server
 RUN make RELEASE=1 CC=musl-gcc
 
 #
+#  exp-1
+#
+FROM ubuntu:20.04 as exp-1
+RUN apt-get update && apt-get install -qy musl-tools make
+ADD exp-1 /exp-1
+WORKDIR /exp-1
+RUN make RELEASE=1 CC=musl-gcc
+
+#
+#  exp-2
+#
+FROM ubuntu:20.04 as exp-2 
+RUN apt-get update && apt-get install -qy musl-tools make
+ADD exp-2 /exp-2
+WORKDIR /exp-2
+RUN make RELEASE=1 CC=musl-gcc
+
+#
 #  mem-test
 #
 FROM ubuntu:20.04 as mem-test
@@ -95,6 +113,8 @@ COPY --from=busybox  /build/busybox_unstripped /bin/busybox
 #COPY --from=dropbear /build/dropbear /build/dropbearkey /bin
 #COPY --from=curl     /build/src/curl /bin
 COPY --from=http-server /http-server/build/http-server /bin/http-server
+COPY --from=exp-1 /exp-1/build/exp-1 /bin/exp-1
+COPY --from=exp-2 /exp-2/build/exp-2 /bin/exp-2
 COPY --from=mem-test /mem-test/build/mem-test /bin/mem-test
 COPY --from=c-code /c-code/build/c-code /bin/c-code
 COPY --from=webserver /webserver/build/webserver /bin/webserver

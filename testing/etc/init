@@ -10,11 +10,13 @@
 #    echo "FAILED: exited with $result"
 #fi
 
-#/bin/http-server -p 80 -b any -c 64 -d /var/www/html
+/bin/http-server -p 80 -b any -c 64 -d /var/www/html
+#/bin/exp-1 -p 80 -b any -c 64 -d /var/www/html #exp-1
+#/bin/exp-2 -p 80 -b any -c 64 -d /var/www/html #exp-2
 #/bin/busybox httpd -p 80 -h /var/www/html
 #exec /etc/test.out
 #exec /bin/ash -c /bin/mem-test
 #/bin/mem-test
 #/bin/overwrite/check-stack
 #exec /bin/ash
-/bin/webserver
+#/bin/webserver
