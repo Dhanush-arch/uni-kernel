@@ -53,7 +53,7 @@ use crate::{
         path::Path,
         procfs::{self, PROC_FS},
     },
-    process::{current_process, switch, Process},
+    process::{switch, Process},
     syscalls::SyscallHandler,
 };
 use alloc::{boxed::Box, sync::Arc};
@@ -269,15 +269,6 @@ pub fn boot_kernel(#[cfg_attr(debug_assertions, allow(unused))] bootinfo: &BootI
     // }
 
     profiler.lap_time("first process init");
-
-    let current_pro = current_process();
-    info!("Process ID {:?}", current_pro.pid());
-    // let vm_ref = current_pro.vm();
-    // let dref = vm_ref.as_deref();
-
-    // let vm = vm_ref.as_ref().unwrap().lock();
-    // let vmarea = &vm.vm_areas()[1];
-    // info!("vm area start = {} end = {}", vmarea.start(), vmarea.end());
 
     // We've done the kernel initialization. Switch into the init...
     switch();

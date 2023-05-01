@@ -16,13 +16,13 @@ use core::{
     sync::atomic::{AtomicUsize, Ordering},
 };
 use crossbeam::atomic::AtomicCell;
+use unikernel_runtime::spinlock::{SpinLock, SpinLockGuard};
 use smoltcp::socket::{SocketRef, TcpSocketBuffer};
 use smoltcp::wire::{IpAddress, IpEndpoint, Ipv4Address};
-use unikernel_runtime::spinlock::{SpinLock, SpinLockGuard};
 
 use super::{process_packets, SOCKETS, SOCKET_WAIT_QUEUE};
 
-const BACKLOG_MAX: usize = 128;
+const BACKLOG_MAX: usize = 8;
 static INUSE_ENDPOINTS: SpinLock<BTreeSet<u16>> = SpinLock::new(BTreeSet::new());
 static PASSIVE_OPENS_TOTAL: AtomicUsize = AtomicUsize::new(0);
 static WRITTEN_BYTES_TOTAL: AtomicUsize = AtomicUsize::new(0);

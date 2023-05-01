@@ -1,7 +1,6 @@
-use bitvec::prelude::*;
 use core::mem::size_of;
-/// Device ID table - initialized with zeros
-/// https://rust-for-linux.github.io/docs/kernel/driver/struct.IdTable.html
+use bitvec::prelude::*;
+
 pub struct IdTable<const BIT_LENGTH: usize>(BitArray<[usize; BIT_LENGTH], LocalBits>); // const expr arithmetic unstable
 
 impl<const BIT_LENGTH: usize> IdTable<BIT_LENGTH> {

@@ -17,13 +17,6 @@ mod metrics;
 pub static PROC_FS: Once<Arc<ProcFs>> = Once::new();
 static METRICS_FILE: Once<Arc<dyn FileLike>> = Once::new();
 
-/// Procfs is a virtual file system in Linux that exposes information about
-/// running processes and system information in a hierarchical file-like structure.
-/// It is typically mounted at /proc and provides access to a variety of information
-/// about the system, including system hardware, kernel configuration,
-/// and process details such as process ID, memory usage, and CPU usage.
-/// The /proc file system is an important tool for system administrators
-/// and developers for understanding and troubleshooting system issues.
 pub struct ProcFs(TmpFs);
 
 impl ProcFs {

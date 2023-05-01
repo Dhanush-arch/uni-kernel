@@ -31,11 +31,10 @@ impl VirtioLegacyPci {
         pci_device: &PciDevice,
     ) -> Result<Arc<dyn VirtioTransport>, VirtioAttachError> {
         // TODO: Check device type
-        // https://devicehunt.com/view/type/pci/vendor/1AF4
         if pci_device.config().vendor_id() != 0x1af4 {
             return Err(VirtioAttachError::InvalidVendorId);
         }
-        // we use I/O mapping and not memory mapping for legacy
+
         let port_base = match pci_device.config().bar(0) {
             Bar::IOMapped { port } => IoPort::new(port),
             Bar::MemoryMapped { .. } => {

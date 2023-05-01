@@ -35,8 +35,7 @@ pub struct BlockSize(isize);
 #[repr(transparent)]
 pub struct BlockCount(isize);
 
-/// The timestamps of a file.
-/// ctime - change time, atime - access time, mtime - modification time
+/// The file size in bytes.
 #[derive(Debug, Copy, Clone)]
 #[repr(transparent)]
 pub struct Time(isize);

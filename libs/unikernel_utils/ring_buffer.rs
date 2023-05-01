@@ -1,8 +1,3 @@
-/// RingBuffer is a buffer which is readable and writable
-/// it has two pointers rp - read prointer, wp - write pointer
-/// rp is associated with poping of data from the buffer
-/// wp is associated with pushing of data into the buffer
-/// the ring buffer as the name suggests is a circular (Ring) buffer
 use core::{cmp::min, mem::MaybeUninit, ops::Range, slice};
 
 pub struct RingBuffer<T, const CAP: usize> {

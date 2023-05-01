@@ -21,18 +21,18 @@ ifeq ($(V),)
 .SILENT:
 endif
 
-# INITRAMFS_PATH := build.initramfs
-# export INIT_SCRIPT := /bin/sh
+INITRAMFS_PATH := build.initramfs
+export INIT_SCRIPT := /bin/sh
 
 # $(IMAGE): Use a Docker image for initramfs.
-ifeq ($(IMAGE),)
-INITRAMFS_PATH := build/testing.initramfs
-export INIT_SCRIPT := /bin/sh
-else
-IMAGE_FILENAME := $(subst /,.s,$(IMAGE))
-INITRAMFS_PATH := build/$(IMAGE_FILENAME).initramfs
-export INIT_SCRIPT := $(shell tools/inspect-init-in-docker-image.py $(IMAGE))
-endif
+# ifeq ($(IMAGE),)
+# INITRAMFS_PATH := build/testing.initramfs
+# export INIT_SCRIPT := /bin/sh
+# else
+# IMAGE_FILENAME := $(subst /,.s,$(IMAGE))
+# INITRAMFS_PATH := build/$(IMAGE_FILENAME).initramfs
+# export INIT_SCRIPT := $(shell tools/inspect-init-in-docker-image.py $(IMAGE))
+# endif
 
 DUMMY_INITRAMFS_PATH := build/dummy-for-lint.initramfs
 
@@ -96,6 +96,7 @@ build:
 build-crate:
 	$(MAKE) initramfs
 
+	$(PROGRESS) "CARGO" "kernel"
 	$(CARGO) build $(CARGOFLAGS) --manifest-path kernel/Cargo.toml
 
 .PHONY: initramfs
@@ -195,9 +196,9 @@ clean:
 #  Build Rules
 #
 build/testing.initramfs: $(wildcard testing/*) $(wildcard testing/*/*) Makefile
-	$(PROGRESS) "Building" Unikernel
-	cd testing && docker buildx build --platform $(docker_platform) -q -t unikernel-testing .
-	#$(PROGRESS) "EXPORT"
+	$(PROGRESS) "BUILD" testing
+	cd testing && docker buildx build --platform $(docker_platform) -t unikernel-testing .
+	$(PROGRESS) "EXPORT" testing
 	mkdir -p build
 	$(PYTHON3) tools/docker2initramfs.py $@ unikernel-testing
 

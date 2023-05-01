@@ -24,7 +24,6 @@ const VIRTQ_DESC_F_WRITE: u16 = 2;
 #[derive(Debug, Copy, Clone)]
 #[repr(C, packed)]
 pub struct VirtqDesc {
-    /// Virt I/O discriptor
     pub addr: u64,
     pub len: u32,
     pub flags: u16,
