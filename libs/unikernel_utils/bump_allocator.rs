@@ -1,5 +1,10 @@
 const PAGE_SIZE: usize = 4096;
 
+/// BumpAllocator is page allocator - memory allocator
+/// base field refers to the base mem physical address
+/// end field refers to the end mem physical address
+/// current field refers to the currently used up (allocated) mem within the range
+/// range - [base, end)
 pub struct BumpAllocator {
     base: usize,
     current: usize,

@@ -21,6 +21,9 @@ static NULL_FILE: Once<Arc<dyn FileLike>> = Once::new();
 pub static SERIAL_TTY: Once<Arc<Tty>> = Once::new();
 pub static PTMX: Once<Arc<Ptmx>> = Once::new();
 
+/// devfs is a virtual file system that provides an interface for accessing
+/// device drivers as if they were files.
+/// In Unix-like systems, devices are represented as files in the file system.
 pub struct DevFs(TmpFs);
 
 impl DevFs {

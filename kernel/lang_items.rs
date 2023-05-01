@@ -32,38 +32,39 @@ fn alloc_error_handler(layout: core::alloc::Layout) -> ! {
 #[panic_handler]
 #[cfg(not(test))]
 fn panic(info: &core::panic::PanicInfo) -> ! {
-    use crate::logger::KERNEL_LOG_BUF;
-    use core::sync::atomic::Ordering;
+    loop {}
+    // use crate::logger::KERNEL_LOG_BUF;
+    // use core::sync::atomic::Ordering;
 
-    if PANICKED.load(Ordering::SeqCst) {
-        unikernel_runtime::print::get_debug_printer().print_bytes(b"\ndouble panic!\n");
-        unikernel_runtime::arch::halt();
-    }
+    // if PANICKED.load(Ordering::SeqCst) {
+    //     unikernel_runtime::print::get_debug_printer().print_bytes(b"\ndouble panic!\n");
+    //     unikernel_runtime::arch::halt();
+    // }
 
-    PANICKED.store(true, Ordering::SeqCst);
-    error!("{}", info);
-    unikernel_runtime::backtrace::backtrace();
+    // PANICKED.store(true, Ordering::SeqCst);
+    // error!("{}", info);
+    // unikernel_runtime::backtrace::backtrace();
 
-    unsafe {
-        warn!("preparing a crash dump...");
-        KERNEL_LOG_BUF.force_unlock();
-        let mut off = 0;
-        let mut log_buffer = KERNEL_LOG_BUF.lock();
-        while let Some(slice) = log_buffer.pop_slice(KERNEL_DUMP_BUF.log.len().saturating_sub(off))
-        {
-            KERNEL_DUMP_BUF.log[off..(off + slice.len())].copy_from_slice(slice);
-            off += slice.len();
-        }
+    // unsafe {
+    //     warn!("preparing a crash dump...");
+    //     KERNEL_LOG_BUF.force_unlock();
+    //     let mut off = 0;
+    //     let mut log_buffer = KERNEL_LOG_BUF.lock();
+    //     while let Some(slice) = log_buffer.pop_slice(KERNEL_DUMP_BUF.log.len().saturating_sub(off))
+    //     {
+    //         KERNEL_DUMP_BUF.log[off..(off + slice.len())].copy_from_slice(slice);
+    //         off += slice.len();
+    //     }
 
-        KERNEL_DUMP_BUF.magic = 0xdeadbeee;
-        KERNEL_DUMP_BUF.len = off as u32;
+    //     KERNEL_DUMP_BUF.magic = 0xdeadbeee;
+    //     KERNEL_DUMP_BUF.len = off as u32;
 
-        warn!("prepared crash dump: log_len={}", off);
-        warn!("booting boot2dump...");
-        let dump_as_bytes = core::slice::from_raw_parts(
-            &KERNEL_DUMP_BUF as *const _ as *const u8,
-            core::mem::size_of::<KernelDump>(),
-        );
-        boot2dump::save_to_file_and_reboot("unikernel.dump", dump_as_bytes);
-    }
+    //     warn!("prepared crash dump: log_len={}", off);
+    //     warn!("booting boot2dump...");
+    //     let dump_as_bytes = core::slice::from_raw_parts(
+    //         &KERNEL_DUMP_BUF as *const _ as *const u8,
+    //         core::mem::size_of::<KernelDump>(),
+    //     );
+    //     boot2dump::save_to_file_and_reboot("unikernel.dump", dump_as_bytes);
+    // }
 }

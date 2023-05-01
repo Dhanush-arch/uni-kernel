@@ -15,10 +15,9 @@ COMMON_ARGS = [
 
 ARCHS = {
     "x64": {
-        "bin":
-        "qemu-system-x86_64",
-        "args":
-        COMMON_ARGS + [
+        "bin": "qemu-system-x86_64",
+        "args": COMMON_ARGS
+        + [
             "-m",
             "1024",
             "-cpu",
@@ -33,7 +32,7 @@ ARCHS = {
             "isa-debug-exit,iobase=0x501,iosize=2",
             "-d",
             "guest_errors,unimp",
-        ]
+        ],
     }
 }
 
