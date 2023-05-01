@@ -1,3 +1,6 @@
+/// The inode (Index Node) number is an identifier used to locate the inode,
+/// and the inode itself stores the metadata and
+/// data for a file or directory in a filesystem.
 use core::fmt::{self, Debug};
 
 use super::{opened_file::OpenOptions, path::PathBuf, stat::FileMode};

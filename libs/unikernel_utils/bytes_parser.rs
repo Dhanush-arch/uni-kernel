@@ -13,6 +13,10 @@ pub enum BytesParserError {
     TooShort,
 }
 
+/// BytesParser is a struct that holds a buffer
+/// bytes are stored in the buffer
+/// current field holds the index of the buffer until
+/// which the buffer(bytes) is parsed
 pub struct BytesParser<'a> {
     buffer: &'a [u8],
     current: usize,

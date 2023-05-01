@@ -77,23 +77,23 @@ fn resolve_symbol(vaddr: VAddr) -> Option<Symbol> {
 
 /// Prints a backtrace.
 pub fn backtrace() {
-    // Backtrace::current_frame().traverse(|i, vaddr| {
-    //     if let Some(symbol) = resolve_symbol(vaddr) {
-    //         warn!(
-    //             "    {index}: {vaddr} {symbol_name}()+0x{offset:x}",
-    //             index = i,
-    //             vaddr = vaddr,
-    //             symbol_name = symbol.name,
-    //             offset = vaddr.value() - symbol.addr.value(),
-    //         );
-    //     } else {
-    //         warn!(
-    //             "    {index}: {vaddr} (symbol unknown)",
-    //             index = i,
-    //             vaddr = vaddr,
-    //         );
-    //     }
-    // });
+    Backtrace::current_frame().traverse(|i, vaddr| {
+        if let Some(symbol) = resolve_symbol(vaddr) {
+            warn!(
+                "    {index}: {vaddr} {symbol_name}()+0x{offset:x}",
+                index = i,
+                vaddr = vaddr,
+                symbol_name = symbol.name,
+                offset = vaddr.value() - symbol.addr.value(),
+            );
+        } else {
+            warn!(
+                "    {index}: {vaddr} (symbol unknown)",
+                index = i,
+                vaddr = vaddr,
+            );
+        }
+    });
 }
 
 pub struct CapturedBacktraceFrame {

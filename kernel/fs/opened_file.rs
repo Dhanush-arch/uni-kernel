@@ -11,7 +11,7 @@ use atomic_refcell::AtomicRefCell;
 use bitflags::bitflags;
 use crossbeam::atomic::AtomicCell;
 
-const FD_MAX: c_int = 1024;
+const FD_MAX: c_int = 1024; // represents the maximum number of open file descriptors that a process can have in a filesystem.
 
 bitflags! {
     pub struct OpenFlags: i32 {
@@ -447,8 +447,9 @@ impl OpenedFileTable {
         }
     }
 
-    /// Allocates an unused fd. Note that this method does not any reservations
+    /// Allocates an unused fd. Note that this method does not make any reservations
     /// for the fd: the caller must register it before unlocking this table.
+    /// fd must be >= gte -- (greater than or equal to)
     fn alloc_fd(&mut self, gte: Option<i32>) -> Result<Fd> {
         let (mut i, gte) = match gte {
             Some(gte) => (gte, gte),
