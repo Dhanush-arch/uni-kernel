@@ -223,14 +223,14 @@ pub fn boot_kernel(#[cfg_attr(debug_assertions, allow(unused))] bootinfo: &BootI
         .lookup_path(Path::new("/dev/console"), true)
         .expect("failed to open /dev/console");
 
-    let argv0 = "/etc/init";
+    // let argv0 = "/etc/init";
 
     // Open the init's executable.
-    // let argv0 = if option_env!("INIT_SCRIPT").is_some() {
-    //     "/bin/sh"
-    // } else {
-    //     "/sbin/init"
-    // };
+    let argv0 = if option_env!("INIT_SCRIPT").is_some() {
+        "/bin/sh"
+    } else {
+        "/sbin/init"
+    };
     let executable_path = root_fs
         .lookup_path(Path::new(argv0), true)
         .expect("failed to open the init executable");
@@ -243,30 +243,30 @@ pub fn boot_kernel(#[cfg_attr(debug_assertions, allow(unused))] bootinfo: &BootI
     process::init();
     profiler.lap_time("process init");
 
-    Process::new_init_process(
-        INITIAL_ROOT_FS.clone(),
-        executable_path,
-        console,
-        &[b"/etc/init"],
-    )
-    .expect("failed to execute");
+    // Process::new_init_process(
+    //     INITIAL_ROOT_FS.clone(),
+    //     executable_path,
+    //     console,
+    //     &[b"/etc/init"],
+    // )
+    // .expect("failed to execute");
 
     // Create the init process.
-    // if let Some(script) = option_env!("INIT_SCRIPT") {
-    //     let argv = &[b"sh", b"-c", script.as_bytes()];
-    //     info!("running init script: {:?}", script);
-    //     Process::new_init_process(INITIAL_ROOT_FS.clone(), executable_path, console, argv)
-    //         .expect("failed to execute the init script: ");
-    // } else {
-    //     info!("running /sbin/init");
-    //     Process::new_init_process(
-    //         INITIAL_ROOT_FS.clone(),
-    //         executable_path,
-    //         console,
-    //         &[b"/sbin/init"],
-    //     )
-    //     .expect("failed to execute /sbin/init");
-    // }
+    if let Some(script) = option_env!("INIT_SCRIPT") {
+        let argv = &[b"sh", b"-c", script.as_bytes()];
+        info!("running init script: {:?}", script);
+        Process::new_init_process(INITIAL_ROOT_FS.clone(), executable_path, console, argv)
+            .expect("failed to execute the init script: ");
+    } else {
+        info!("running /sbin/init");
+        Process::new_init_process(
+            INITIAL_ROOT_FS.clone(),
+            executable_path,
+            console,
+            &[b"/sbin/init"],
+        )
+        .expect("failed to execute /sbin/init");
+    }
 
     profiler.lap_time("first process init");
 
